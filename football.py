@@ -12,6 +12,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = '13FKqzuFu-A9_JSsTugiw17dOjlVf-_Zn52caU65qWnk'
 
+# Get credentials from credentials.json or token.pickle
 def getCredentials():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -33,6 +34,7 @@ def getCredentials():
             pickle.dump(creds, token)
     return creds
 
+# Update google spreadsheet with the values
 def updateSheet(inputvalue, range_):
     service = build('sheets', 'v4', credentials=getCredentials())
 
@@ -50,7 +52,7 @@ def colnum_string(n):
         string = chr(65 + remainder) + string
     return string
 
-
+# Get column of the date
 def getDateColumn():
     service = build('sheets', 'v4', credentials=getCredentials())
     range_ = 'G2:AK2'
@@ -61,7 +63,7 @@ def getDateColumn():
     idx = values[0].index(datestr)
     return colnum_string(idx + 7)
     
-
+# Update value of player currently scanning
 def updateValue(player_id):
     row = player_id + 2
     range_ = getDateColumn() + str(row)
@@ -105,4 +107,4 @@ def getId():
 
 
 if __name__ == '__main__':
-    updateValue(getId())
+  updateValue(getId())
