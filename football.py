@@ -1,6 +1,8 @@
 from __future__ import print_function
 import pickle
 import os.path
+import cv2
+import time
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -11,6 +13,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = '13FKqzuFu-A9_JSsTugiw17dOjlVf-_Zn52caU65qWnk'
+
 
 def getCredentials():
     creds = None
@@ -33,6 +36,7 @@ def getCredentials():
             pickle.dump(creds, token)
     return creds
 
+
 def updateSheet(inputvalue, range_):
     service = build('sheets', 'v4', credentials=getCredentials())
 
@@ -42,6 +46,7 @@ def updateSheet(inputvalue, range_):
     request = sheet.values().update(spreadsheetId=SPREADSHEET_ID, range=range_, valueInputOption='RAW', body=inputvalue)
     response = request.execute()
     print(response)
+
 
 def colnum_string(n):
     string = ""
@@ -60,18 +65,18 @@ def getDateColumn():
     datestr = datetime.now().strftime("%d/%m")
     idx = values[0].index(datestr)
     return colnum_string(idx + 7)
-    
+
 
 def updateValue(player_id):
-    row = player_id + 2
+    row = int(player_id) + 2
     range_ = getDateColumn() + str(row)
     inputvalue = {}
     if datetime.time(datetime.now()) < datetime.time(datetime.strptime("19:30", "%H:%M")):
-        inputvalue['values']= [['P']]
+        inputvalue['values'] = [['P']]
     else:
-        inputvalue['values']= [['L']]
-    inputvalue['majorDimension']="ROWS"
-    inputvalue['range']= range_
+        inputvalue['values'] = [['L']]
+    inputvalue['majorDimension'] = "ROWS"
+    inputvalue['range'] = range_
     updateSheet(inputvalue, range_)
 
 
@@ -95,6 +100,8 @@ def getId():
             if data:
                 running = False
                 result = data
+                cv2.imshow("vinkje.jpg", 1)
+                time.sleep(2)
         # display the result
         cv2.imshow("img", img)
         if cv2.waitKey(1) == ord("q"):
@@ -105,4 +112,5 @@ def getId():
 
 
 if __name__ == '__main__':
-    updateValue(getId())
+    while True:
+        updateValue(getId())
