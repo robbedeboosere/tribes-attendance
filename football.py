@@ -74,5 +74,35 @@ def updateValue(player_id):
     inputvalue['range']= range_
     updateSheet(inputvalue, range_)
 
+
+def getId():
+    # initalize the cam
+    result = -1
+    cap = cv2.VideoCapture(0)
+    # initialize the cv2 QRCode detector
+    detector = cv2.QRCodeDetector()
+    running = True
+    while running:
+        _, img = cap.read()
+        # detect and decode
+        data, bbox, _ = detector.detectAndDecode(img)
+        # check if there is a QRCode in the image
+        if bbox is not None:
+            # display the image with lines
+            for i in range(len(bbox)):
+                # draw all lines
+                cv2.line(img, tuple(bbox[i][0]), tuple(bbox[(i + 1) % len(bbox)][0]), color=(255, 0, 0), thickness=2)
+            if data:
+                running = False
+                result = data
+        # display the result
+        cv2.imshow("img", img)
+        if cv2.waitKey(1) == ord("q"):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+    return result
+
+
 if __name__ == '__main__':
-    updateValue(7)
+    updateValue(getId())
