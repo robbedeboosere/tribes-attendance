@@ -71,10 +71,16 @@ def updateValue(player_id):
     row = int(player_id) + 2
     range_ = getDateColumn() + str(row)
     inputvalue = {}
-    if datetime.time(datetime.now()) < datetime.time(datetime.strptime("19:30", "%H:%M")):
-        inputvalue['values'] = [['P']]
+    if datetime.today().weekday() == 5:
+        if datetime.time(datetime.now()) < datetime.time(datetime.strptime("9:45", "%H:%M")):
+            inputvalue['values'] = [['P']]
+        else:
+            inputvalue['values'] = [['L']]
     else:
-        inputvalue['values'] = [['L']]
+        if datetime.time(datetime.now()) < datetime.time(datetime.strptime("19:30", "%H:%M")):
+            inputvalue['values'] = [['P']]
+        else:
+            inputvalue['values'] = [['L']]
     inputvalue['majorDimension'] = "ROWS"
     inputvalue['range'] = range_
     updateSheet(inputvalue, range_)
