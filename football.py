@@ -113,4 +113,7 @@ def getId():
 
 if __name__ == '__main__':
     while True:
-        updateValue(getId())
+        id = getId()
+        if id == -1:
+            break
+        updateValue(id)
