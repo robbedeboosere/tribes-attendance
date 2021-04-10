@@ -100,10 +100,11 @@ def getId():
             if data:
                 running = False
                 result = data
-                cv2.imshow("vinkje.jpg", 1)
+                vn = cv2.imread('vinkje.jpeg',-1)
+                cv2.imshow('TICKET TO JUNIORBOWL 2021', vn)
                 time.sleep(2)
         # display the result
-        cv2.imshow("img", img)
+        cv2.imshow("practice attendance (Lennert en Robbe zijn MVP)", img)
         if cv2.waitKey(1) == ord("q"):
             break
     cap.release()
